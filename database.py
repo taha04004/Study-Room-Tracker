@@ -7,9 +7,8 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-# -----------------------
+
 # ROOM FUNCTIONS
-# -----------------------
 def get_all_rooms():
     conn = get_db()
     rows = conn.execute("SELECT * FROM rooms").fetchall()
@@ -22,9 +21,8 @@ def get_room(room_id):
     conn.close()
     return row
 
-# -----------------------
+
 # BOOKING FUNCTIONS
-# -----------------------
 def create_booking(email, room_id, date, start_time, end_time):
     conn = get_db()
     conn.execute("""
@@ -65,9 +63,8 @@ def get_active_booking(room_id, today, current_time):
     conn.close()
     return row
 
-# -----------------------
+
 # OVERLAP LOGIC
-# -----------------------
 def booking_overlap(email, date, start_time, end_time):
     conn = get_db()
     result = conn.execute("""
