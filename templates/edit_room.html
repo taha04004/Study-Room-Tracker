@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Room</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #cc0000;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+        }
+        .btn:hover { background: #a30000; }
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+        .back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Room {{ room.room_number }}</h1>
+
+    <form method="POST">
+        <label>Room Number</label>
+        <input type="text" name="room_number" value="{{ room.room_number }}" required>
+
+        <label>Capacity</label>
+        <input type="number" name="capacity" min="1" value="{{ room.capacity }}" required>
+
+        <label>Room Type</label>
+        <select name="type" required>
+            <option value="Study" {% if room.type == 'Study' %}selected{% endif %}>Study</option>
+            <option value="Quiet" {% if room.type == 'Quiet' %}selected{% endif %}>Quiet</option>
+            <option value="Group" {% if room.type == 'Group' %}selected{% endif %}>Group</option>
+        </select>
+
+        <label>Status</label>
+        <select name="status" required>
+            <option value="Available" {% if room.status == 'Available' %}selected{% endif %}>Available</option>
+            <option value="Occupied" {% if room.status == 'Occupied' %}selected{% endif %}>Occupied</option>
+        </select>
+
+        <button class="btn">Save Changes</button>
+    </form>
+
+    <a href="/manage-rooms" class="back">← Back to Manage Rooms</a>
+</div>
+</body>
+</html>

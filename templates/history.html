@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Booking History</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #b30000;
+            margin-bottom: 25px;
+            font-size: 36px;
+        }
+
+        /* CENTERED EMAIL FORM */
+        .email-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .email-form label {
+            font-weight: bold;
+        }
+
+        .email-input {
+            padding: 12px;
+            width: 320px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .email-btn {
+            padding: 12px 20px;
+            background: #b30000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .email-btn:hover {
+            background: #7a0000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 35px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #b30000;
+            color: white;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .msg {
+            text-align: center;
+            margin-top: 20px;
+            color: green;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Your Booking History</h1>
+
+    <!-- BEAUTIFUL CENTERED EMAIL FORM -->
+    <form action="/history" method="GET" class="email-form">
+        <label>Your Email</label>
+        <input type="email" name="email" class="email-input" required>
+        <button class="email-btn">View My Bookings</button>
+    </form>
+
+    {% if msg == "success" %}
+        <p class="msg">✔ Booking added successfully!</p>
+    {% elif msg == "deleted" %}
+        <p class="msg" style="color:red;">✖ Booking cancelled.</p>
+    {% endif %}
+
+    {% if email %}
+        {% if bookings and bookings|length > 0 %}
+            <table>
+                <tr>
+                    <th>Room</th>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for b in bookings %}
+                <tr>
+                    <td>{{ b.room_number }}</td>
+                    <td>{{ b.date }}</td>
+                    <td>{{ b.start_time }}</td>
+                    <td>{{ b.end_time }}</td>
+                    <td>
+                        <a href="/cancel/{{ b.id }}" style="color:#b30000; font-weight:bold;">Cancel</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        {% else %}
+            <p class="msg" style="color:#444;">No bookings found for this email.</p>
+        {% endif %}
+    {% endif %}
+
+    <a href="/">← Back to Home</a>
+</div>
+
+</body>
+</html>

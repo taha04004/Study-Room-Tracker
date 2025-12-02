@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Rooms</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            margin-bottom: 20px;
+        }
+        .top-links {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            background: #cc0000;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn:hover { background: #a30000; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #eee;
+        }
+        a.action {
+            color: #cc0000;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        a.action:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Manage Rooms</h1>
+
+    <div class="top-links">
+        <a href="/staff-dashboard" class="btn">← Back to Dashboard</a>
+        <a href="/add-room" class="btn">+ Add New Room</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Room #</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for room in rooms %}
+        <tr>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.type }}</td>
+            <td>{{ room.capacity }}</td>
+            <td>{{ room.status }}</td>
+            <td>
+                <a href="/edit-room/{{ room.id }}" class="action">Edit</a> |
+                <a href="/delete-room/{{ room.id }}" class="action"
+                   onclick="return confirm('Delete this room?');">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</body>
+</html>

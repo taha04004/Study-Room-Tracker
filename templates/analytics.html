@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            background: #cc0000;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn:hover { background: #a30000; }
+
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            margin-bottom: 20px;
+            font-size: 2.4rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-box {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        canvas {
+            height: 260px !important;
+        }
+
+        .back {
+            text-align: center;
+            display: block;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 🔙 NEW BUTTON ADDED HERE -->
+    <div class="top-links">
+        <a href="/staff-dashboard" class="btn">← Back to Dashboard</a>
+    </div>
+
+    <h1>Usage Analytics Dashboard</h1>
+
+    <div class="grid">
+
+        <div class="chart-box">
+            <h2>Total Bookings per Room</h2>
+            <canvas id="bookingsChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h2>Total Hours Booked per Room</h2>
+            <canvas id="hoursChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h2>Most Popular Start Times</h2>
+            <canvas id="timesChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h2>Bookings Per Day</h2>
+            <canvas id="dailyChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    // ======== BOOKINGS PER ROOM ========
+    const roomLabels = {{ bookings_per_room | map(attribute='room_number') | list | tojson }};
+    const roomCounts = {{ bookings_per_room | map(attribute='total') | list | tojson }};
+
+    new Chart(document.getElementById('bookingsChart'), {
+        type: 'bar',
+        data: {
+            labels: roomLabels,
+            datasets: [{
+                label: 'Bookings',
+                data: roomCounts,
+                backgroundColor: '#cc0000'
+            }]
+        }
+    });
+
+    // ======== HOURS PER ROOM ========
+    const hrLabels = {{ hours_per_room | map(attribute='room_number') | list | tojson }};
+    const hrCounts = {{ hours_per_room | map(attribute='total_hours') | list | tojson }};
+
+    new Chart(document.getElementById('hoursChart'), {
+        type: 'bar',
+        data: {
+            labels: hrLabels,
+            datasets: [{
+                label: 'Total Hours',
+                data: hrCounts,
+                backgroundColor: '#0066cc'
+            }]
+        }
+    });
+
+    // ======== MOST POPULAR TIMES ========
+    const timeLabels = {{ times | map(attribute='start_time') | list | tojson }};
+    const timeCounts = {{ times | map(attribute='total') | list | tojson }};
+
+    new Chart(document.getElementById('timesChart'), {
+        type: 'line',
+        data: {
+            labels: timeLabels,
+            datasets: [{
+                label: 'Bookings at This Time',
+                data: timeCounts,
+                borderColor: '#009933',
+                backgroundColor: '#00cc66',
+                fill: true
+            }]
+        }
+    });
+
+    // ======== DAILY BOOKINGS ========
+    const dayLabels = {{ bookings_per_day | map(attribute='date') | list | tojson }};
+    const dayCounts = {{ bookings_per_day | map(attribute='total') | list | tojson }};
+
+    new Chart(document.getElementById('dailyChart'), {
+        type: 'bar',
+        data: {
+            labels: dayLabels,
+            datasets: [{
+                label: 'Bookings',
+                data: dayCounts,
+                backgroundColor: '#ffaa00'
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

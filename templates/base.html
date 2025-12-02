@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Study Room</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+            color: #2d2d2d;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            color: #cc0000;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        label { font-weight: 600; margin-top: 15px; display: block; }
+        input, select {
+            width: 100%; padding: 12px; margin-top: 8px;
+            border-radius: 8px; border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: block; width: 100%; padding: 14px;
+            margin-top: 25px; background: #cc0000;
+            color: white; text-align: center;
+            border-radius: 8px; font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #a30000; }
+
+        .back {
+            display: block; margin-top: 20px; text-align: center;
+            text-decoration: none; font-weight: 600; color: #2d2d2d;
+        }
+        .back:hover { text-decoration: underline; }
+
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; }
+        .alert-success { background: #d4edda; color: #155724; border-left: 6px solid #28a745; }
+        .alert-error { background: #f8d7da; color: #721c24; border-left: 6px solid #cc0000; }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 6px solid #cc0000;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Book a Study Room</h1>
+
+    {% if message %}
+        <div class="message error">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" action="/submit-booking">
+
+        <label>Your Email</label>
+        <input type="email" name="email" required placeholder="student@yorku.ca">
+
+        <label>Select Room</label>
+        <select name="room" required>
+            <option disabled selected>Choose a room</option>
+            {% for room in rooms %}
+                <option value="{{ room.id }}">Room {{ room.room_number }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Date</label>
+        <input type="date" name="date" required>
+
+        <label>Start Time (12-hour)</label>
+        <select name="start" required>
+            <option disabled selected>Select start time</option>
+            <!-- AM -->
+            <option value="00:00">12:00 AM</option>
+            <option value="00:30">12:30 AM</option>
+            <option value="01:00">01:00 AM</option>
+            <option value="01:30">01:30 AM</option>
+            <option value="02:00">02:00 AM</option>
+            <option value="02:30">02:30 AM</option>
+            <option value="03:00">03:00 AM</option>
+            <option value="03:30">03:30 AM</option>
+            <option value="04:00">04:00 AM</option>
+            <option value="04:30">04:30 AM</option>
+            <option value="05:00">05:00 AM</option>
+            <option value="05:30">05:30 AM</option>
+            <option value="06:00">06:00 AM</option>
+            <option value="06:30">06:30 AM</option>
+            <option value="07:00">07:00 AM</option>
+            <option value="07:30">07:30 AM</option>
+            <option value="08:00">08:00 AM</option>
+            <option value="08:30">08:30 AM</option>
+            <option value="09:00">09:00 AM</option>
+            <option value="09:30">09:30 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="10:30">10:30 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="11:30">11:30 AM</option>
+
+            <!-- PM -->
+            <option value="12:00">12:00 PM</option>
+            <option value="12:30">12:30 PM</option>
+            <option value="13:00">01:00 PM</option>
+            <option value="13:30">01:30 PM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="14:30">02:30 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="15:30">03:30 PM</option>
+            <option value="16:00">04:00 PM</option>
+            <option value="16:30">04:30 PM</option>
+            <option value="17:00">05:00 PM</option>
+            <option value="17:30">05:30 PM</option>
+            <option value="18:00">06:00 PM</option>
+            <option value="18:30">06:30 PM</option>
+            <option value="19:00">07:00 PM</option>
+            <option value="19:30">07:30 PM</option>
+            <option value="20:00">08:00 PM</option>
+            <option value="20:30">08:30 PM</option>
+            <option value="21:00">09:00 PM</option>
+            <option value="21:30">09:30 PM</option>
+            <option value="22:00">10:00 PM</option>
+            <option value="22:30">10:30 PM</option>
+            <option value="23:00">11:00 PM</option>
+            <option value="23:30">11:30 PM</option>
+        </select>
+
+        <label>End Time (12-hour)</label>
+        <select name="end" required>
+            <option disabled selected>Select end time</option>
+            <!-- Same options as start -->
+            <option value="00:00">12:00 AM</option>
+            <option value="00:30">12:30 AM</option>
+            <option value="01:00">01:00 AM</option>
+            <option value="01:30">01:30 AM</option>
+            <option value="02:00">02:00 AM</option>
+            <option value="02:30">02:30 AM</option>
+            <option value="03:00">03:00 AM</option>
+            <option value="03:30">03:30 AM</option>
+            <option value="04:00">04:00 AM</option>
+            <option value="04:30">04:30 AM</option>
+            <option value="05:00">05:00 AM</option>
+            <option value="05:30">05:30 AM</option>
+            <option value="06:00">06:00 AM</option>
+            <option value="06:30">06:30 AM</option>
+            <option value="07:00">07:00 AM</option>
+            <option value="07:30">07:30 AM</option>
+            <option value="08:00">08:00 AM</option>
+            <option value="08:30">08:30 AM</option>
+            <option value="09:00">09:00 AM</option>
+            <option value="09:30">09:30 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="10:30">10:30 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="11:30">11:30 AM</option>
+
+            <option value="12:00">12:00 PM</option>
+            <option value="12:30">12:30 PM</option>
+            <option value="13:00">01:00 PM</option>
+            <option value="13:30">01:30 PM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="14:30">02:30 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="15:30">03:30 PM</option>
+            <option value="16:00">04:00 PM</option>
+            <option value="16:30">04:30 PM</option>
+            <option value="17:00">05:00 PM</option>
+            <option value="17:30">05:30 PM</option>
+            <option value="18:00">06:00 PM</option>
+            <option value="18:30">06:30 PM</option>
+            <option value="19:00">07:00 PM</option>
+            <option value="19:30">07:30 PM</option>
+            <option value="20:00">08:00 PM</option>
+            <option value="20:30">08:30 PM</option>
+            <option value="21:00">09:00 PM</option>
+            <option value="21:30">09:30 PM</option>
+            <option value="22:00">10:00 PM</option>
+            <option value="22:30">10:30 PM</option>
+            <option value="23:00">11:00 PM</option>
+            <option value="23:30">11:30 PM</option>
+        </select>
+
+        <button type="submit" class="btn">Confirm Booking</button>
+    </form>
+
+    <a href="/" class="back">← Back to Home</a>
+</div>
+
+</body>
+</html>

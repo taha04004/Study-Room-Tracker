@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Study Rooms</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px 0;
+            color: #2d2d2d;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            text-align: center;
+            color: #b30000;
+            font-size: 2.4rem;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #b30000;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #7a0000;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Filter Study Rooms</h1>
+
+    <form method="POST" action="/filter">
+
+        <label>Date</label>
+        <input type="date" name="date" required>
+
+        <label>Start Time (12-hour)</label>
+        <select name="start" required>
+            <option disabled selected>Select start time</option>
+            {% for hour in range(0,24) %}
+                <option value="{{ "%02d" % hour }}:00">
+                    {{ "%02d" % ((hour-1)%12+1) }}:00 {% if hour < 12 %}AM{% else %}PM{% endif %}
+                </option>
+                <option value="{{ "%02d" % hour }}:30">
+                    {{ "%02d" % ((hour-1)%12+1) }}:30 {% if hour < 12 %}AM{% else %}PM{% endif %}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>End Time (12-hour)</label>
+        <select name="end" required>
+            <option disabled selected>Select end time</option>
+            {% for hour in range(0,24) %}
+                <option value="{{ "%02d" % hour }}:00">
+                    {{ "%02d" % ((hour-1)%12+1) }}:00 {% if hour < 12 %}AM{% else %}PM{% endif %}
+                </option>
+                <option value="{{ "%02d" % hour }}:30">
+                    {{ "%02d" % ((hour-1)%12+1) }}:30 {% if hour < 12 %}AM{% else %}PM{% endif %}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Minimum Capacity</label>
+        <select name="capacity" required>
+            <option value="0">No Minimum</option>
+            <option value="2">2+ people</option>
+            <option value="4">4+ people</option>
+            <option value="6">6+ people</option>
+            <option value="8">8+ people</option>
+            <option value="10">10+ people</option>
+        </select>
+
+        <button type="submit" class="btn">Search Rooms</button>
+    </form>
+
+    <a href="/" class="back">← Back to Home</a>
+</div>
+
+</body>
+</html>

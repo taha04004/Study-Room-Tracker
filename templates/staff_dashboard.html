@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            margin-bottom: 25px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .card {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .card h2 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .card p {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #222;
+        }
+        .links {
+            margin-top: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .btn {
+            background: #cc0000;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn:hover { background: #a30000; }
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        th {
+            background: #eee;
+        }
+        .cancel-link {
+            color: #cc0000;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .cancel-link:hover {
+            text-decoration: underline;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .logout {
+            text-decoration: none;
+            font-weight: 600;
+            color: #333;
+        }
+        .logout:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="top-bar">
+        <h1>Library Staff Dashboard</h1>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Bookings Today</h2>
+            <p>{{ bookings_today }}</p>
+        </div>
+        <div class="card">
+            <h2>Active Right Now</h2>
+            <p>{{ active_now }}</p>
+        </div>
+        <div class="card">
+            <h2>Total Rooms</h2>
+            <p>{{ rooms_count }}</p>
+        </div>
+        <div class="card">
+            <h2>Most Booked Room</h2>
+            <p>
+                {% if most_booked %}
+                    {{ most_booked.room_number }} ({{ most_booked.total }})
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="links">
+        <a href="/analytics" class="btn">View Analytics</a>
+        <a href="/manage-rooms" class="btn">Manage Rooms</a>
+    </div>
+
+    <h2 style="margin-top: 30px;">Recent Bookings</h2>
+    <table>
+        <tr>
+            <th>Room</th>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        {% for b in recent_bookings %}
+        <tr>
+            <td>{{ b.room_number }}</td>
+            <td>{{ b.date }}</td>
+            <td>{{ b.start_time }}</td>
+            <td>{{ b.end_time }}</td>
+            <td>{{ b.email }}</td>
+            <td>
+                <a href="/staff/cancel/{{ b.id }}" class="cancel-link">Cancel</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</body>
+</html>

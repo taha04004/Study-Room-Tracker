@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Rooms</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #b30000;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .room-card {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #b30000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #7a0000;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 20px;
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Available Rooms</h1>
+
+    <p><strong>Date:</strong> {{ date }}</p>
+    <p><strong>Time:</strong> {{ start }} → {{ end }}</p>
+    <p><strong>Minimum Capacity:</strong> {{ min_capacity }}</p>
+    <br>
+
+    {% if rooms|length == 0 %}
+        <p>No rooms match your search criteria.</p>
+    {% else %}
+        {% for r in rooms %}
+            <div class="room-card">
+                <h2>Room {{ r.room_number }}</h2>
+                <p><strong>Type:</strong> {{ r.type }}</p>
+                <p><strong>Capacity:</strong> {{ r.capacity }}</p>
+
+                <a class="btn" href="/room/{{ r.id }}">View Details</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <a class="back" href="/filter">← Back to Filter</a>
+</div>
+
+</body>
+</html>

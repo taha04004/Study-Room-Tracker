@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f4f4;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            width: 380px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+        h1 {
+            color: #cc0000;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 18px;
+            background: #cc0000;
+            color: white;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { background: #a30000; }
+        .error {
+            margin-top: 10px;
+            color: #cc0000;
+            font-weight: 600;
+        }
+        .back {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+        .back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Staff Login</h1>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button class="btn">Login</button>
+        </form>
+
+        <a href="/" class="back">← Back to Home</a>
+    </div>
+</body>
+</html>
