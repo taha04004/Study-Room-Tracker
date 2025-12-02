@@ -3,12 +3,12 @@ import sqlite3
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# ===== EMAIL IMPORTS =====
+# EMAIL IMPORTS
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email_config import EMAIL_ADDRESS, EMAIL_PASSWORD
-# ==========================
+
 
 app = Flask(__name__)
 
@@ -19,9 +19,7 @@ app.secret_key = "change_this_super_secret_key"
 app.permanent_session_lifetime = timedelta(minutes=20)
 
 
-# ==========================
 # DB HELPERS
-# ==========================
 def get_db():
     conn = sqlite3.connect(ROOMS_DB)
     conn.row_factory = sqlite3.Row
@@ -34,9 +32,8 @@ def get_staff_db():
     return conn
 
 
-# ==========================
+
 # EMAIL SENDER
-# ==========================
 def send_confirmation_email(to_email, room_number, date, start, end):
     subject = "Your Study Room Booking Confirmation"
 
@@ -91,9 +88,8 @@ def send_confirmation_email(to_email, room_number, date, start, end):
         print("Email sending failed:", e)
 
 
-# ==========================
+
 # TIME FORMATTER
-# ==========================
 def to_12h(time_str):
     """
     Convert 'HH:MM' (24h) to 'HH:MM AM/PM'.
@@ -104,26 +100,22 @@ def to_12h(time_str):
     return datetime.strptime(time_str, "%H:%M").strftime("%I:%M %p")
 
 
-# ==========================
+
 # AUTH HELPERS
-# ==========================
 def staff_required():
     if not session.get("staff_logged_in"):
         return False
     return True
 
 
-# ==========================
+
 # HOME PAGE
-# ==========================
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ==========================
 # ROOMS LIST
-# ==========================
 @app.route("/rooms")
 def rooms():
     conn = get_db()
@@ -158,9 +150,8 @@ def rooms():
     return render_template("rooms.html", rooms=room_list)
 
 
-# ==========================
+
 # ROOM DETAILS + REAL-TIME STATUS
-# ==========================
 @app.route("/room/<int:id>")
 def room_details(id):
     conn = get_db()
@@ -205,9 +196,8 @@ def room_details(id):
     )
 
 
-# ==========================
+
 # BOOK ROOM
-# ==========================
 @app.route("/book")
 def book():
     room_id = request.args.get("room_id")
@@ -289,7 +279,6 @@ def submit_booking():
             suggested_end = start_min + req_min
 
         def fmt(m):
-            # clamp anything >= 24:00 to 23:59 to avoid invalid time
             if m >= 24 * 60:
                 m = 24 * 60 - 1
             return f"{m//60:02d}:{m%60:02d}"
@@ -329,9 +318,8 @@ def submit_booking():
     return redirect(url_for("history", msg="success", email=email))
 
 
-# ==========================
+
 # USER HISTORY + CANCEL OWN
-# ==========================
 @app.route("/history")
 def history():
     msg = request.args.get("msg")
@@ -379,9 +367,7 @@ def cancel_booking(id):
     return redirect(url_for("history"))
 
 
-# ==========================
 # STAFF LOGIN / LOGOUT
-# ==========================
 @app.route("/staff-login", methods=["GET", "POST"])
 def staff_login():
     if request.method == "POST":
@@ -414,9 +400,7 @@ def logout():
     return redirect(url_for("home"))
 
 
-# ==========================
 # STAFF DASHBOARD
-# ==========================
 @app.route("/staff-dashboard")
 def staff_dashboard():
     if not staff_required():
@@ -470,9 +454,8 @@ def staff_dashboard():
     )
 
 
-# ==========================
+
 # STAFF CANCEL ANY BOOKING
-# ==========================
 @app.route("/staff/cancel/<int:id>")
 def staff_cancel_booking(id):
     if not staff_required():
@@ -485,9 +468,8 @@ def staff_cancel_booking(id):
     return redirect(url_for("staff_dashboard"))
 
 
-# ==========================
+
 # ROOM MANAGEMENT (STAFF)
-# ==========================
 @app.route("/manage-rooms")
 def manage_rooms():
     if not staff_required():
@@ -561,9 +543,8 @@ def delete_room(id):
     return redirect(url_for("manage_rooms"))
 
 
-# ==========================
+
 # FILTER ROOMS (USER)
-# ==========================
 @app.route("/filter", methods=["GET", "POST"])
 def filter_rooms():
     if request.method == "GET":
@@ -603,9 +584,8 @@ def filter_rooms():
     )
 
 
-# ==========================
+
 # ANALYTICS (STAFF ONLY)
-# ==========================
 @app.route("/analytics")
 def analytics():
     if not staff_required():
@@ -656,8 +636,7 @@ def analytics():
     )
 
 
-# ==========================
+
 # RUN APP
-# ==========================
 if __name__ == "__main__":
     app.run(debug=True)
