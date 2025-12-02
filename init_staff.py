@@ -18,7 +18,7 @@ def init_staff_db():
         )
     """)
 
-    # Default staff account: username=admin, password=Admin123
+    # Default staff account:
     username = "admin"
     password = "Admin123"
     pw_hash = generate_password_hash(password)
@@ -30,7 +30,7 @@ def init_staff_db():
 
     conn.commit()
     conn.close()
-    print("✅ staff.db initialized with default user:")
+    print("staff.db initialized with default user:")
     print("   username: admin")
     print("   password: Admin123")
 
