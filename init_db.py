@@ -19,7 +19,7 @@ def init_db():
         )
     """)
 
-    # Create bookings table (FIXED: PRIMARY KEY spelling)
+    # Create bookings table
     cursor.execute("""
         CREATE TABLE bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
