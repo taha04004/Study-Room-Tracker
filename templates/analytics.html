@@ -89,8 +89,6 @@
 <body>
 
 <div class="container">
-
-    <!-- 🔙 NEW BUTTON ADDED HERE -->
     <div class="top-links">
         <a href="/staff-dashboard" class="btn">← Back to Dashboard</a>
     </div>
@@ -124,7 +122,7 @@
 </div>
 
 <script>
-    // ======== BOOKINGS PER ROOM ========
+    // BOOKINGS PER ROOM 
     const roomLabels = {{ bookings_per_room | map(attribute='room_number') | list | tojson }};
     const roomCounts = {{ bookings_per_room | map(attribute='total') | list | tojson }};
 
@@ -140,7 +138,7 @@
         }
     });
 
-    // ======== HOURS PER ROOM ========
+    // HOURS PER ROOM
     const hrLabels = {{ hours_per_room | map(attribute='room_number') | list | tojson }};
     const hrCounts = {{ hours_per_room | map(attribute='total_hours') | list | tojson }};
 
@@ -156,7 +154,7 @@
         }
     });
 
-    // ======== MOST POPULAR TIMES ========
+    // MOST POPULAR TIMES
     const timeLabels = {{ times | map(attribute='start_time') | list | tojson }};
     const timeCounts = {{ times | map(attribute='total') | list | tojson }};
 
@@ -174,7 +172,7 @@
         }
     });
 
-    // ======== DAILY BOOKINGS ========
+    // DAILY BOOKINGS 
     const dayLabels = {{ bookings_per_day | map(attribute='date') | list | tojson }};
     const dayCounts = {{ bookings_per_day | map(attribute='total') | list | tojson }};
 
